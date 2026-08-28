@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="es" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Pokémon | Maestro David M</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,800;1,900&family=Righteous&display=swap');
+
+        :root {
+            --fire: #ff4747;
+            --water: #3da4ff;
+            --grass: #2ecc71;
+            --electric: #ffcc00;
+            --psychic: #9b59b6;
+            --dark: #1a1a2e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(rgba(15, 12, 41, 0.85), rgba(48, 43, 99, 0.85), rgba(36, 36, 62, 0.95)), 
+                        url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?q=80&w=2000&auto=format&fit=crop') center/cover fixed;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header & Tutor Badge */
+        header {
+            text-align: center;
+            padding: 40px 20px 20px;
+            position: relative;
+        }
+
+        .tutor-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #000;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-family: 'Righteous', cursive;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), inset 0 0 10px rgba(255,255,255,0.8);
+            border: 3px solid #fff;
+            animation: pulse-gold 2s infinite;
+            margin-bottom: 20px;
+            z-index: 10;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Righteous', cursive;
+            font-size: 4rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ffcc00, #ff4747);
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 204, 0, 0.3);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #d1d8e0;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .hero-pokemon {
+            position: absolute;
+            top: -20px;
+            right: 5%;
+            width: 250px;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 30px var(--psychic));
+            animation: float 4s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        /* Glassmorphism Cards Container */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px 40px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 30px;
+            width: 320px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: visible;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 20px;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+
+        .card:hover {
+            transform: translateY(-15px) scale(1.05);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .card:hover::before { opacity: 1; }
+        .card.fire:hover { box-shadow: 0 15px 40px rgba(255, 71, 71, 0.4); }
+        .card.fire::before { background: linear-gradient(135deg, rgba(255,71,71,0.2), transparent); }
+        .card.water:hover { box-shadow: 0 15px 40px rgba(61, 164, 255, 0.4); }
+        .card.water::before { background: linear-gradient(135deg, rgba(61,164,255,0.2), transparent); }
+        .card.grass:hover { box-shadow: 0 15px 40px rgba(46, 204, 113, 0.4); }
+        .card.grass::before { background: linear-gradient(135deg, rgba(46,204,113,0.2), transparent); }
+
+        .card img {
+            width: 180px;
+            height: 180px;
+            margin-top: -90px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 15px 15px rgba(0,0,0,0.5));
+            transition: all 0.5s ease;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card.water img { animation-delay: 0.5s; }
+        .card.grass img { animation-delay: 1s; }
+        .card:hover img { transform: scale(1.2) rotate(5deg); }
+
+        .card h2 {
+            font-family: 'Righteous', cursive;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .card.fire h2 { color: var(--fire); }
+        .card.water h2 { color: var(--water); }
+        .card.grass h2 { color: var(--grass); }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #b2bec3;
+        }
+
+        /* Text Guide Panel Layout */
+        .guide-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 60px;
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            text-align: left;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 5;
+        }
+
+        .guide-panel h2 {
+            font-family: 'Righteous', cursive;
+            font-size: 2.2rem;
+            color: #ffcc00;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+        }
+
+        .guide-panel h3 {
+            font-family: 'Righteous', cursive;
+            font-size: 1.8rem;
+            color: #3da4ff;
+            margin: 40px 0 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .guide-panel p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #d1d8e0;
+            margin-bottom: 18px;
+        }
+
+        .guide-panel p strong {
+            color: #fff;
+        }
+
+        /* General Decorated Lists */
+        ul.pokemon-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 25px;
+        }
+
+        ul.pokemon-list li {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            font-size: 1.15rem;
+            line-height: 1.6;
+            color: #d1d8e0;
+        }
+
+        ul.pokemon-list li:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ul.pokemon-list li img {
+            width: 70px;
+            height: 70px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        ul.pokemon-list li strong {
+            color: #fff;
+            display: inline-block;
+        }
+
+        ul.pokemon-list li:nth-child(1) img { animation-delay: 0s; }
+        ul.pokemon-list li:nth-child(2) img { animation-delay: 0.5s; }
+        ul.pokemon-list li:nth-child(3) img { animation-delay: 1s; }
+        ul.pokemon-list li:nth-child(4) img { animation-delay: 1.5s; }
+        ul.pokemon-list li:nth-child(5) img { animation-delay: 2s; }
+
+        /* Specific List Themes */
+        ul.evo-list li { border-left: 5px solid var(--grass); background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(46, 204, 113, 0.1)); }
+        ul.evo-list li:hover { background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(46, 204, 113, 0.2)); }
+        
+        ul.boss-list li { border-left: 5px solid #8e44ad; background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(142, 68, 173, 0.1)); }
+        ul.boss-list li:hover { background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(142, 68, 173, 0.2)); }
+
+        ul.badge-list li { border-left: 5px solid var(--electric); background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(255, 204, 0, 0.1)); }
+        ul.badge-list li:hover { background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(255, 204, 0, 0.2)); }
+
+        ul.tool-list li { border-left: 5px solid var(--water); background: linear-gradient(90deg, rgba(0,0,0,0.4), rgba(61, 164, 255, 0.1)); }
+        ul.tool-list li:hover { background: linear-gradient(90deg, rgba(0,0,0,0.5), rgba(61, 164, 255, 0.2)); }
+
+        ul.code-list li { border-left: 5px solid var(--fire); background: linear-gradient(90deg, rgba(0, 0, 0, 0.4), rgba(255, 71, 71, 0.1)); }
+        ul.code-list li:hover { background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(255, 71, 71, 0.2)); }
+
+        /* Call to Action */
+        .cta-container {
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .btn-epic {
+            background: linear-gradient(90deg, #ff4747, #ffcc00);
+            color: #000;
+            font-family: 'Righteous', cursive;
+            font-size: 1.5rem;
+            padding: 15px 50px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(255, 71, 71, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-bottom: 20px; 
+        }
+        
+        .btn-epic:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 204, 0, 0.7);
+            color: #fff;
+        }
+
+        a.scroll-link {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .transition-section {
+            text-align: center;
+            margin: 40px 0 60px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .transition-section img {
+            max-width: 450px;
+            width: 100%;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.6));
+            animation: float-slow 5s ease-in-out infinite;
+        }
+
+        /* XP Table Styles */
+        .px-table-wrapper {
+            overflow-x: auto;
+            margin-top: 30px;
+        }
+
+        .px-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 15px;
+            min-width: 800px;
+        }
+
+        .px-table th {
+            background: rgba(0, 0, 0, 0.4);
+            color: #ffcc00;
+            padding: 15px;
+            font-family: 'Righteous', cursive;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .px-table td {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px 15px;
+            vertical-align: middle;
+            color: #d1d8e0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            transition: background 0.3s;
+        }
+        
+        .px-table tr:hover td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .px-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; font-weight: bold; color: #fff; }
+        .px-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; font-family: 'Righteous', cursive; font-size: 1.6rem; color: #2ecc71; text-align: center; text-shadow: 0 0 10px rgba(46, 204, 113, 0.5); }
+
+        .td-concept {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: bold;
+            color: #ffaa00;
+        }
+
+        .td-concept img {
+            width: 50px;
+            height: 50px;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5));
+        }
+
+        /* Epic Finale Section */
+        .epic-finale-container {
+            text-align: center;
+            padding: 20px 20px 80px;
+            position: relative;
+            z-index: 5;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .epic-image-primary {
+            max-width: 550px;
+            width: 100%;
+            filter: drop-shadow(0 20px 40px rgba(255, 71, 71, 0.6));
+            animation: float 5s ease-in-out infinite;
+            margin-bottom: 40px;
+        }
+
+        .epic-message {
+            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(36, 36, 62, 0.9));
+            border: 2px solid #ffcc00;
+            border-radius: 20px;
+            padding: 50px;
+            margin: 0 auto 60px;
+            box-shadow: 0 0 50px rgba(255, 204, 0, 0.3), inset 0 0 20px rgba(255, 204, 0, 0.2);
+        }
+
+        .epic-message h2 {
+            font-family: 'Righteous', cursive;
+            font-size: 3rem;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ffcc00, #ff4747);
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 25px;
+            text-shadow: 0 0 20px rgba(255, 204, 0, 0.2);
+        }
+
+        .epic-message p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #e0e6ed;
+            margin-bottom: 20px;
+        }
+
+        .epic-message p strong {
+            color: #ffcc00;
+        }
+
+        .epic-image-ultimate {
+            max-width: 750px;
+            width: 100%;
+            filter: drop-shadow(0 30px 60px rgba(255, 255, 255, 0.5));
+            animation: pulse-gold 4s infinite, float-slow 7s ease-in-out infinite;
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        @keyframes float-slow { 0% { transform: translateY(0px); } 50% { transform: translateY(-25px); } 100% { transform: translateY(0px); } }
+        @keyframes pulse-gold { 0% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), inset 0 0 10px rgba(255,255,255,0.6); } 50% { box-shadow: 0 0 25px rgba(255, 215, 0, 0.8), inset 0 0 20px rgba(255,255,255,0.9); } 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.4), inset 0 0 10px rgba(255,255,255,0.6); } }
+
+        .particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            background: radial-gradient(circle at 15% 50%, rgba(255, 204, 0, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 85% 30%, rgba(155, 89, 182, 0.1) 0%, transparent 50%);
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .container { padding-top: 60px; }
+            .hero-pokemon { display: none; }
+            .guide-panel, .epic-message { padding: 30px; margin: 0 20px 40px; }
+            .transition-section img, .epic-image-primary, .epic-image-ultimate { max-width: 300px; }
+            ul.pokemon-list li { flex-direction: column; text-align: center; gap: 10px; }
+            .epic-message h2 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles"></div>
+
+    <header>
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/150.png" alt="Mewtwo" class="hero-pokemon">
+        <div class="tutor-badge">🏅 Tutor: Maestro David M</div>
+        <h1>¡Despierta tu Potencial!</h1>
+        <p class="subtitle">El camino hacia la Liga Pokémon es duro, pero con esfuerzo, estrategia y constancia, no hay líder de gimnasio que te pueda detener. ¡Es tu momento de brillar!</p>
+    </header>
+
+    <div class="container">
+        <!-- Tarjetas Introductivas -->
+        <div class="card fire">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard">
+            <h2>PASIÓN</h2>
+            <p>Enciende la llama de tu motivación. Al igual que Charizard, debes volar alto, creer en tu poder interior y quemar tus miedos hasta convertirlos en cenizas.</p>
+        </div>
+
+        <div class="card water">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" alt="Blastoise">
+            <h2>CONSTANCIA</h2>
+            <p>El agua siempre encuentra su camino. Aprende de Blastoise: mantén la calma bajo presión, fluye ante las adversidades y golpea con fuerza cuando sea el momento exacto.</p>
+        </div>
+
+        <div class="card grass">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png" alt="Venusaur">
+            <h2>CRECIMIENTO</h2>
+            <p>Echa raíces firmes en tu disciplina. Como Venusaur absorbiendo la luz del sol, absorbe todo el conocimiento a tu alrededor para florecer y alcanzar la cima.</p>
+        </div>
+    </div>
+
+    <!-- Panel 1: Guía de Aula -->
+    <div class="guide-panel" id="guia-inicio">
+        <h2>Proyecto Pokédex: Guía del Entrenador y Entrenadora de 6.º de Primaria</h2>
+        <p>¡Bienvenidos y bienvenidas al nuevo curso en el CEIP Fernando de los Ríos! Este año de 6.º de Primaria va a ser una gran aventura. Para acompañaros en este camino de aprendizaje, convivencia y trabajo en equipo, ponemos en marcha la Liga Pokémon de 6.º.</p>
+        <p>En esta guía encontrarás toda la información e instrucciones necesarias para conocer cómo funciona la dinámica, cómo hacer evolucionar a tu compañero Pokémon y cómo conseguir que nuestro grupo aula alcance lo más alto.</p>
+        
+        <h3>1. Tu Compañero Pokémon y la Evolución</h3>
+        <p>Al comenzar el curso, cada alumno y alumna elegirá un <strong>Pokémon Inicial en su primera etapa de desarrollo</strong>. Este Pokémon representará tu avatar personal durante todo el año escolar.</p>
+        <p>Es muy importante que sepas que <strong>la evolución de tu Pokémon no depende de las notas numéricas de los exámenes</strong>, sino de tu esfuerzo diario, tu actitud, tu compromiso con la clase y tu compañerismo. Todos empezáis desde el mismo punto y todos podéis llegar a la máxima evolución.</p>
+        
+        <ul class="pokemon-list evo-list">
+            <li>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" alt="Charmander">
+                <span><strong>Fase 1 (Pokémon Base):</strong> Inicias el curso con tu avatar seleccionado (0 PX).</span>
+            </li>
+            <li>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png" alt="Charmeleon">
+                <span><strong>Fase 2 (Evolución Intermedia):</strong> Se alcanza al acumular 500 Puntos de Experiencia (PX).</span>
+            </li>
+            <li>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard">
+                <span><strong>Fase 3 (Evolución Final / Megaevolución):</strong> Se alcanza al acumular 1000 Puntos de Experiencia (PX).</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="cta-container">
+        <a href="#tabla-px" class="scroll-link"><button class="btn-epic">¡Comenzar Entrenamiento!</button></a>
+        
+        <div class="transition-section"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/384.png" alt="Rayquaza Legendario"></div>
+
+        <!-- Panel 2: Tabla de PX -->
+        <div class="guide-panel" id="tabla-px">
+            <h3>2. Tabla de Puntos de Experiencia (PX)</h3>
+            <p>Los Puntos de Experiencia (PX) se consiguen en las actividades diarias de clase. A continuación, se detallan las acciones valoradas y sus equivalencias Pokémon:</p>
+            <div class="px-table-wrapper">
+                <table class="px-table">
+                    <thead>
+                        <tr>
+                            <th>Acción Valorada</th>
+                            <th>Concepto Pokémon</th>
+                            <th>Descripción de la Actitud</th>
+                            <th style="text-align: center;">Recompensa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Participación activa</td><td><div class="td-concept"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu">Ataque Rápido</div></td><td>Levantar la mano, responder preguntas, aportar ideas valiosas en debate.</td><td>+10 PX</td></tr>
+                        <tr><td>Ayuda entre iguales</td><td><div class="td-concept"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/282.png" alt="Gardevoir">Pantalla de Luz</div></td><td>Explicar algo a un/a compañero/a, mostrar empatía y apoyar en el aula.</td><td>+20 PX</td></tr>
+                        <tr><td>Constancia y hábito</td><td><div class="td-concept"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/143.png" alt="Snorlax">Restos (Perseverancia)</div></td><td>Traer el material a tiempo, libreta ordenada y deberes realizados.</td><td>+15 PX</td></tr>
+                        <tr><td>Superación personal</td><td><div class="td-concept"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/448.png" alt="Lucario">Banda Focus</div></td><td>No rendirse ante una dificultad, corregir errores y seguir intentándolo.</td><td>+25 PX</td></tr>
+                        <tr><td>Cuidado del entorno</td><td><div class="td-concept"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/411.png" alt="Bastiodon">Escudo Protector</div></td><td>Mantener el aula limpia y ordenada, reciclar y cuidar el material común.</td><td>+15 PX</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <a href="#retos-colectivos" class="scroll-link" style="margin-top: 20px;"><button class="btn-epic" style="background: linear-gradient(90deg, #3da4ff, #9b59b6);">¡Ver Retos Colectivos!</button></a>
+        <div class="transition-section"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/249.png" alt="Lugia Boss de Incursión"></div>
+
+        <!-- Panel 3: Retos Colectivos -->
+        <div class="guide-panel" id="retos-colectivos">
+            <h3>3. Retos Colectivos: Las Incursiones de Aula</h3>
+            <p>La Liga Pokémon no es una competición individual; <strong>¡el trabajo en equipo es la clave!</strong> Cada mes se activará una Incursión Colectiva contra un Pokémon Boss. Para vencerlo, toda la clase deberá cooperar y sumar fuerzas hacia un objetivo común.</p>
+            <ul class="pokemon-list boss-list">
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/164.png" alt="Noctowl"><span><strong>Incursión Lectora:</strong> Conseguir entre toda la clase leer un número determinado de libros en un mes.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/149.png" alt="Dragonite"><span><strong>Incursión de Convivencia:</strong> Lograr una semana completa sin faltas de respeto ni conflictos en el patio y el aula.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png" alt="Metagross"><span><strong>Incursión de Investigación:</strong> Finalizar un proyecto interdisciplinar colaborativo de forma destacada.</span></li>
+            </ul>
+            <p style="margin-top: 30px; padding: 20px; background: rgba(255, 204, 0, 0.1); border-left: 4px solid #ffcc00; border-radius: 10px;">
+                <strong>Recompensa Épica:</strong> Si el grupo aula logra derrotar al Boss antes de que termine el plazo, todo el alumnado recibirá una bonificación especial de PX y una recompensa colectiva para la clase.
+            </p>
+        </div>
+
+        <a href="#medallas-gimnasio" class="scroll-link" style="margin-top: 20px;"><button class="btn-epic" style="background: linear-gradient(90deg, #2ecc71, #ffcc00);">¡Ver Medallas de Gimnasio!</button></a>
+        <div class="transition-section"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png" alt="Eevee, símbolo de las múltiples evoluciones y valores"></div>
+
+        <!-- Panel 4: Medallas de Gimnasio por Valores -->
+        <div class="guide-panel" id="medallas-gimnasio">
+            <h3>4. Medallas de Gimnasio por Valores</h3>
+            <p>Al finalizar cada trimestre, se otorgarán las Medallas de Gimnasio. Estas medallas reconocen el crecimiento en valores y habilidades socioemocionales:</p>
+            <ul class="pokemon-list badge-list">
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/468.png" alt="Togekiss"><span><strong>Medalla de la Empatía:</strong> Otorgada por saber escuchar, ponerse en el lugar de los demás y actuar de forma amable.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/151.png" alt="Mew"><span><strong>Medalla de la Autonomía:</strong> Otorgada por gestionar eficazmente el propio tiempo de estudio y tareas personales.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png" alt="Machamp"><span><strong>Medalla de la Cooperación:</strong> Otorgada por ser un apoyo constante en las dinámicas de trabajo en grupo.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/202.png" alt="Wobbuffet"><span><strong>Medalla de la Resiliencia:</strong> Otorgada por demostrar constancia y capacidad de superación frente a los retos.</span></li>
+            </ul>
+        </div>
+        
+        <a href="#herramientas-digitales" class="scroll-link" style="margin-top: 20px;"><button class="btn-epic" style="background: linear-gradient(90deg, #9b59b6, #3da4ff);">¡Descubrir Herramientas!</button></a>
+        <div class="transition-section"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/479.png" alt="Rotom"></div>
+
+        <!-- Panel 5: Herramientas Digitales -->
+        <div class="guide-panel" id="herramientas-digitales">
+            <h3>5. Herramientas Digitales de Seguimiento</h3>
+            <p>Para registrar nuestros avances utilizaremos tecnologías educativas rápidas y sencillas:</p>
+            <ul class="pokemon-list tool-list">
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/137.png" alt="Porygon"><span><strong>ClassDojo Personalizado:</strong> En esta plataforma tendrás asignado tu avatar Pokémon. Cada día registraremos los PX obtenidos en clase.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/81.png" alt="Magnemite"><span><strong>Pokédex de Aula (Genially):</strong> En la pantalla interactiva del aula podremos consultar la Pokédex digital para ver el estado de evolución de nuestros avatares y el progreso de las Incursiones de grupo.</span></li>
+            </ul>
+        </div>
+
+        <a href="#codigo-entrenador" class="scroll-link" style="margin-top: 20px;"><button class="btn-epic" style="background: linear-gradient(90deg, #e74c3c, #f39c12);">¡Leer el Código de Entrenador!</button></a>
+        <div class="transition-section"><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/59.png" alt="Arcanine"></div>
+
+        <!-- Panel 6: El Código del Entrenador -->
+        <div class="guide-panel" id="codigo-entrenador" style="margin-bottom: 0;">
+            <h3>6. El Código del Entrenador y Entrenadora</h3>
+            <p>Para garantizar que esta aventura sea divertida y enriquecedora para todos y todas, aceptamos el siguiente compromiso:</p>
+            <ul class="pokemon-list code-list">
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/175.png" alt="Togepi"><span>Tratar con <strong>respeto, amabilidad y justicia</strong> a todos los compañeros y compañeras de la clase.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/311.png" alt="Plusle"><span><strong>Celebrar los logros y evoluciones</strong> de los demás como si fueran propios.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/113.png" alt="Chansey"><span><strong>Brindar ayuda</strong> al compañero/a que la necesite antes de buscar el beneficio individual.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png" alt="Magikarp"><span>Afrontar los <strong>errores como oportunidades</strong> para aprender y ganar más experiencia.</span></li>
+                <li><img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png" alt="Pikachu"><span>Recordar siempre que <strong>formamos un gran equipo</strong> en el CEIP Fernando de los Ríos.</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Final Épico -->
+    <div class="epic-finale-container">
+        
+        <!-- Gran Imagen del Proyecto -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/250.png" alt="Ho-Oh Iniciando el Viaje" class="epic-image-primary">
+
+        <!-- Mensaje de Cierre -->
+        <div class="epic-message">
+            <h2>¡Tu Leyenda Comienza Hoy!</h2>
+            <p>El camino hacia la Liga Pokémon del <strong>CEIP Fernando de los Ríos</strong> no será sencillo. Habrá desafíos que pondrán a prueba tu perseverancia, tareas que exigirán tu concentración y obstáculos que requerirán de toda tu energía.</p>
+            <p>Pero recuerda una regla de oro: <strong>ningún entrenador alcanza la grandeza en solitario</strong>. Apóyate en tu equipo, levántate con más fuerza después de cada error, respeta a tus rivales y celebra con orgullo cada pequeña evolución.</p>
+            <p>Ten siempre presente que la verdadera victoria no es sacar un diez, sino ser hoy un poco mejor de lo que fuiste ayer. Prepara tu mochila, confía en tu potencial y sal a darlo todo.</p>
+            <p style="font-size: 1.5rem; font-family: 'Righteous', cursive; color: #ffcc00; margin-top: 30px; letter-spacing: 1px;">¡El Hall de la Fama te está esperando!</p>
+        </div>
+
+        <!-- Imagen Definitiva y Épica -->
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/493.png" alt="Arceus, el creador" class="epic-image-ultimate">
+        
+    </div>
+
+</body>
+</html>
